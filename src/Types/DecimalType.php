@@ -111,7 +111,7 @@ class DecimalType extends Type
     /**
      * Parse the format.
      *
-     * @param string Format
+     * @param string $format
      * @return array ['precision', 'places', 'round_mode']
      */
     protected function parseFormat(string $format) : array
@@ -124,7 +124,7 @@ class DecimalType extends Type
 
         $formats = explode('|', $format);
 
-        foreach($formats as $format) {
+        foreach ($formats as $format) {
             if ($format !== '') {
                 if (strpos($format, ':') !== false) {
                     list($precision, $places) = explode(':', $format);
@@ -143,7 +143,7 @@ class DecimalType extends Type
     /**
      * Parse the round mode.
      *
-     * @param string 
+     * @param string $roundMode
      * @return int
      */
     protected function parseRoundMode(string $roundMode) : int

@@ -11,11 +11,11 @@ use function Safe\json_encode;
 
 class JsonType extends Type
 {
-   /**
-    * Default format.
-    *
-    * @var string
-    */ 
+    /**
+     * Default format.
+     *
+     * @var string
+     */
     protected $defaultFormat = 'json';
 
     /**

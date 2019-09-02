@@ -9,11 +9,11 @@ use JnJairo\Laravel\Cast\Types\DateTimeType;
 
 class DateType extends DateTimeType
 {
-   /**
-    * Default format.
-    *
-    * @var string
-    */ 
+    /**
+     * Default format.
+     *
+     * @var string
+     */
     protected $defaultFormat = 'Y-m-d';
 
     /**

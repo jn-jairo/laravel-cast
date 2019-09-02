@@ -658,15 +658,14 @@ class CastTest extends TestCase
 
     /**
      * @dataProvider decimalConfigProvider
-     */ 
+     */
     public function test_decimal_config(
         ?int $precision,
         ?int $places,
         ?string $roundMode,
         string $string,
         string $stringRounded
-    ) : void
-    {
+    ) : void {
         $type = 'decimal';
 
         $cast = new Cast([
@@ -706,15 +705,14 @@ class CastTest extends TestCase
 
     /**
      * @dataProvider decimalConfigProvider
-     */ 
+     */
     public function test_decimal_format(
         ?int $precision,
         ?int $places,
         ?string $roundMode,
         string $string,
         string $stringRounded
-    ) : void
-    {
+    ) : void {
         $type = 'decimal';
 
         $cast = new Cast([
@@ -828,7 +826,7 @@ class CastTest extends TestCase
 
     /**
      * @dataProvider uuidConfigProvider
-     */ 
+     */
     public function test_uuid_config(int $version, string $format) : void
     {
         $type = 'uuid';
@@ -861,7 +859,7 @@ class CastTest extends TestCase
 
     /**
      * @dataProvider uuidConfigProvider
-     */ 
+     */
     public function test_uuid_format(int $version, string $format) : void
     {
         $type = 'uuid';

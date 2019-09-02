@@ -56,7 +56,7 @@ class CastServiceProviderTest extends TestCase
         $config->get('cast', [])->willReturn([])->shouldBeCalled();
         $config->set('cast', require realpath(__DIR__ . '/../config/cast.php'))->shouldBeCalled();
 
-        Container::getInstance()->singleton('config', function($app) use (&$config) {
+        Container::getInstance()->singleton('config', function ($app) use (&$config) {
             return $config->reveal();
         });
 
