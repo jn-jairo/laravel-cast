@@ -22,6 +22,9 @@ return [
             'config' => [
                 // Example using format parameter:
                 // Cast::cast($value, 'decimal', '10:2|half_up');
+                // Cast::cast($value, 'decimal', '10:2');
+                // Cast::cast($value, 'decimal', '2');
+                // Cast::cast($value, 'decimal', 'half_up');
                 'precision' => 28,
                 'places' => 2,
                 'round_mode' => 'half_up', // up|down|ceiling|floor|half_up|half_down|half_even|half_odd|truncate

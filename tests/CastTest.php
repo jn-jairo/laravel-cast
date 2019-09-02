@@ -652,6 +652,7 @@ class CastTest extends TestCase
             'default' => [10, 1, 'default', '1234.55', '1234.6'],
             'zero' => [10, 3, 'default', '1234.5', '1234.500'],
             'precision_places_only' => [10, 3, null, '1234.5555', '1234.556'],
+            'places_only' => [null, 3, null, '1234.5555', '1234.556'],
             'round_mode_only' => [null, null, 'half_up', '1234.5555', '1234.56'],
         ];
     }
@@ -730,6 +731,8 @@ class CastTest extends TestCase
 
         if (! is_null($precision) && ! is_null($places)) {
             $format[] = $precision . ':' . $places;
+        } elseif (! is_null($places)) {
+            $format[] = $places;
         }
 
         if (! is_null($roundMode)) {

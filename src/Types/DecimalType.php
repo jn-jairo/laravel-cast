@@ -131,6 +131,8 @@ class DecimalType extends Type
 
                     $formatParsed['precision'] = (int) $precision;
                     $formatParsed['places'] = (int) $places;
+                } elseif (is_numeric($format)) {
+                    $formatParsed['places'] = (int) $format;
                 } else {
                     $formatParsed['round_mode'] = $this->parseRoundMode($format);
                 }

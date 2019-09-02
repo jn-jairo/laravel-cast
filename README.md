@@ -72,7 +72,7 @@ print_r(Cast::castJson(new DateTime('01 jan 2000'), 'date'));
 
 ## Format parameter
 
-- **decimal** - `precision:places|(up|down|ceiling|floor|half_up|half_down|half_even|half_odd|truncate)`. Example: `10:2|half_up`, `10:2`, `half_up`. Default: `28:2|half_up`.
+- **decimal** - `precision:places|(up|down|ceiling|floor|half_up|half_down|half_even|half_odd|truncate)`. Example: `10:2|half_up`, `10:2`, `2`, `half_up`. Default: `28:2|half_up`.
 The decimal type uses the https://php-decimal.io extension, to use this type run `composer require php-decimal/php-decimal:^1.1` and install the decimal extension.
 - **date** - Example: `Y-m-d`. Default: `Y-m-d`.
 - **datetime**, **timestamp** - Example: `Y-m-d H:i:s`. Default: `Y-m-d H:i:s`.
