@@ -397,22 +397,38 @@ class CastTest extends TestCase
         $this->assertIsString($cast->cast($json, $type, 'json'), 'Format json from json');
         $this->assertIsArray($cast->cast($json, $type, 'array'), 'Format array from json');
         $this->assertIsObject($cast->cast($json, $type, 'object'), 'Format object from json');
-        $this->assertInstanceOf(Collection::class, $cast->cast($json, $type, 'collection'), 'Format collection from json');
+        $this->assertInstanceOf(
+            Collection::class,
+            $cast->cast($json, $type, 'collection'),
+            'Format collection from json'
+        );
 
         $this->assertIsString($cast->cast($array, $type, 'json'), 'Format json from array');
         $this->assertIsArray($cast->cast($array, $type, 'array'), 'Format array from array');
         $this->assertIsObject($cast->cast($array, $type, 'object'), 'Format object from array');
-        $this->assertInstanceOf(Collection::class, $cast->cast($array, $type, 'collection'), 'Format collection from array');
+        $this->assertInstanceOf(
+            Collection::class,
+            $cast->cast($array, $type, 'collection'),
+            'Format collection from array'
+        );
 
         $this->assertIsString($cast->cast($object, $type, 'json'), 'Format json from object');
         $this->assertIsArray($cast->cast($object, $type, 'array'), 'Format array from object');
         $this->assertIsObject($cast->cast($object, $type, 'object'), 'Format object from object');
-        $this->assertInstanceOf(Collection::class, $cast->cast($object, $type, 'collection'), 'Format collection from object');
+        $this->assertInstanceOf(
+            Collection::class,
+            $cast->cast($object, $type, 'collection'),
+            'Format collection from object'
+        );
 
         $this->assertIsString($cast->cast($collection, $type, 'json'), 'Format json from collection');
         $this->assertIsArray($cast->cast($collection, $type, 'array'), 'Format array from collection');
         $this->assertIsObject($cast->cast($collection, $type, 'object'), 'Format object from collection');
-        $this->assertInstanceOf(Collection::class, $cast->cast($collection, $type, 'collection'), 'Format collection from collection');
+        $this->assertInstanceOf(
+            Collection::class,
+            $cast->cast($collection, $type, 'collection'),
+            'Format collection from collection'
+        );
 
         $this->assertSame($array, $cast->cast($jsonable, $type, 'array'), 'Format array from jsonable');
         $this->assertEquals($object, $cast->cast($jsonable, $type, 'object'), 'Format object from jsonable');
@@ -441,7 +457,11 @@ class CastTest extends TestCase
         $this->assertEquals($collection, $cast->cast($json, $type, 'collection'), 'PHP collection from json');
         $this->assertEquals($collection, $cast->cast($array, $type, 'collection'), 'PHP collection from array');
         $this->assertEquals($collection, $cast->cast($object, $type, 'collection'), 'PHP collection from object');
-        $this->assertEquals($collection, $cast->cast($collection, $type, 'collection'), 'PHP collection from collection');
+        $this->assertEquals(
+            $collection,
+            $cast->cast($collection, $type, 'collection'),
+            'PHP collection from collection'
+        );
 
         $this->assertSame($json, $cast->castDb($json, $type), 'Database from json');
         $this->assertSame($json, $cast->castDb($array, $type), 'Database from array');
