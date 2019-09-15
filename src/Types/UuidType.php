@@ -2,10 +2,8 @@
 
 namespace JnJairo\Laravel\Cast\Types;
 
-use InvalidArgumentException;
 use JnJairo\Laravel\Cast\Types\Type;
 use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
-use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;

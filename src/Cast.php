@@ -2,7 +2,6 @@
 
 namespace JnJairo\Laravel\Cast;
 
-use Illuminate\Container\Container;
 use JnJairo\Laravel\Cast\Contracts\Cast as CastContract;
 use JnJairo\Laravel\Cast\Contracts\Type;
 use JnJairo\Laravel\Cast\Exceptions\InvalidTypeException;
@@ -115,7 +114,7 @@ class Cast implements CastContract
                 throw new InvalidTypeException('[' . $type . ']: Class "' . $class . '" does not exists.');
             }
 
-            $instance = Container::getInstance()->make($class);
+            $instance = app($class);
 
             if (! is_a($instance, Type::class)) {
                 throw new InvalidTypeException('[' . $type . ']: Class "' . $class

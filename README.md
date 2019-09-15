@@ -9,7 +9,7 @@ This package provide cast for Laravel.
 
 ## Requirements
 
-- Laravel Framework >= 5.5.28
+- Laravel Framework >= 5.8
 
 ## Installation
 

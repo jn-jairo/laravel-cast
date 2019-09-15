@@ -17,7 +17,7 @@ class CastServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/cast.php' => $this->app->configPath('cast.php'),
+                __DIR__ . '/../config/cast.php' => config_path('cast.php'),
             ], 'config');
         }
     }

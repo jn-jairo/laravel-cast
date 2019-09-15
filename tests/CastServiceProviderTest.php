@@ -2,74 +2,46 @@
 
 namespace JnJairo\Laravel\Cast\Tests;
 
-use ArrayAccess;
-use Illuminate\Container\Container;
-use Illuminate\Contracts\Config\Repository as Config;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\ServiceProvider;
 use JnJairo\Laravel\Cast\Cast;
 use JnJairo\Laravel\Cast\CastServiceProvider;
 use JnJairo\Laravel\Cast\Contracts\Cast as CastContract;
 use JnJairo\Laravel\Cast\Facades\Cast as CastFacade;
-use JnJairo\Laravel\Cast\Tests\TestCase;
+use JnJairo\Laravel\Cast\Tests\OrchestraTestCase as TestCase;
 
 /**
  * @testdox Cast service provider
  */
 class CastServiceProviderTest extends TestCase
 {
-    /**
-     * @requires function \Illuminate\Contracts\Foundation\Application::configPath
-     */
     public function test_boot_config() : void
     {
-        $app = $this->prophesize(Application::class);
-        $app->runningInConsole()->willReturn(true)->shouldBeCalled();
-        $app->configPath('cast.php', \Prophecy\Argument::any())->willReturnArgument(0)->shouldBeCalled();
-
-        $serviceProvider = new CastServiceProvider($app->reveal());
-        $serviceProvider->boot();
+        $this->assertArrayHasKey(CastServiceProvider::class, CastServiceProvider::$publishes, 'Publish class');
+        $this->assertContains(
+            config_path('cast.php'),
+            CastServiceProvider::$publishes[CastServiceProvider::class],
+            'Publish path'
+        );
+        $this->assertArrayHasKey('config', CastServiceProvider::$publishGroups, 'Publish group class');
+        $this->assertContains(
+            config_path('cast.php'),
+            CastServiceProvider::$publishGroups['config'],
+            'Publish group path'
+        );
     }
 
     public function test_register_config() : void
     {
-        $app = $this->prophesize(Application::class);
-        $app->willImplement(ArrayAccess::class);
-
-        $config = $this->prophesize(Config::class);
-        $config->get('cast', [])->willReturn([])->shouldBeCalled();
-        $config->set('cast', require realpath(__DIR__ . '/../config/cast.php'))->shouldBeCalled();
-
-        $app->offsetGet('config')->willReturn($config)->shouldBeCalled();
-        $app->singleton('cast', \Prophecy\Argument::any())->shouldBeCalled();
-        $app->singleton(CastContract::class, \Prophecy\Argument::any())->shouldBeCalled();
-
-        $serviceProvider = new CastServiceProvider($app->reveal());
-        $serviceProvider->register();
+        $this->assertSame(config('cast'), require realpath(__DIR__ . '/../config/cast.php'), 'Configuration content');
     }
 
     public function test_register_bind() : void
     {
-        $config = $this->prophesize(Config::class);
-        $config->willImplement(ArrayAccess::class);
-        $config->offsetGet('cast')->willReturn([])->shouldBeCalled();
-        $config->get('cast', [])->willReturn([])->shouldBeCalled();
-        $config->set('cast', require realpath(__DIR__ . '/../config/cast.php'))->shouldBeCalled();
-
-        Container::getInstance()->singleton('config', function ($app) use (&$config) {
-            return $config->reveal();
-        });
-
-        $serviceProvider = new CastServiceProvider(Container::getInstance());
-        $serviceProvider->register();
-
-        $cast = Container::getInstance()->make('cast');
+        $cast = app('cast');
         $this->assertInstanceOf(Cast::class, $cast, 'Bind tag');
 
-        $cast = Container::getInstance()->make(CastContract::class);
+        $cast = app(CastContract::class);
         $this->assertInstanceOf(Cast::class, $cast, 'Bind contract');
 
-        CastFacade::setFacadeApplication(Container::getInstance());
         $cast = CastFacade::getFacadeRoot();
         $this->assertInstanceOf(Cast::class, $cast, 'Bind facade');
     }

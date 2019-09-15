@@ -2,9 +2,6 @@
 
 namespace JnJairo\Laravel\Cast\Types;
 
-use Carbon\CarbonInterface;
-use DateTimeInterface;
-use Illuminate\Support\Carbon;
 use JnJairo\Laravel\Cast\Types\DateTimeType;
 
 class DateType extends DateTimeType

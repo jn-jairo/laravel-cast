@@ -4,7 +4,6 @@ namespace JnJairo\Laravel\Cast\Tests;
 
 use DateTime;
 use Decimal\Decimal;
-use Illuminate\Container\Container;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use JnJairo\Laravel\Cast\Cast;
@@ -13,7 +12,7 @@ use JnJairo\Laravel\Cast\Exceptions\InvalidTypeException;
 use JnJairo\Laravel\Cast\Tests\Fixtures\DummyArrayable;
 use JnJairo\Laravel\Cast\Tests\Fixtures\DummyJsonable;
 use JnJairo\Laravel\Cast\Tests\Fixtures\Types\DummyType;
-use JnJairo\Laravel\Cast\Tests\TestCase;
+use JnJairo\Laravel\Cast\Tests\OrchestraTestCase as TestCase;
 use Ramsey\Uuid\Uuid;
 use stdClass;
 
@@ -109,9 +108,7 @@ class CastTest extends TestCase
 
         $dummy = new DummyType;
 
-        Container::getInstance()->bind(DummyType::class, function ($app) use (&$dummy) {
-            return $dummy;
-        });
+        app()->instance(DummyType::class, $dummy);
 
         $cast = new Cast([
             'types' => [
