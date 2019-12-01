@@ -1,6 +1,11 @@
 # Changelog
 
-## [Unreleased](https://github.com/jn-jairo/laravel-cast/compare/v0.0.2...master)
+## [Unreleased](https://github.com/jn-jairo/laravel-cast/compare/v0.0.3...master)
+
+## [v0.0.3 (2019-11-30)](https://github.com/jn-jairo/laravel-cast/compare/v0.0.2...v0.0.3)
+
+### Added
+- PHPDoc in facade
 
 ## [v0.0.2 (2019-09-14)](https://github.com/jn-jairo/laravel-cast/compare/v0.0.1...v0.0.2)
 
