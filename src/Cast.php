@@ -46,7 +46,7 @@ class Cast implements CastContract
      *
      * @param mixed $value
      * @param string $type
-     * @param strint $format
+     * @param string $format
      * @return mixed
      */
     public function cast($value, string $type, string $format = '')
@@ -59,7 +59,7 @@ class Cast implements CastContract
      *
      * @param mixed $value
      * @param string $type
-     * @param strint $format
+     * @param string $format
      * @return mixed
      */
     public function castDb($value, string $type, string $format = '')
@@ -72,7 +72,7 @@ class Cast implements CastContract
      *
      * @param mixed $value
      * @param string $type
-     * @param strint $format
+     * @param string $format
      * @return mixed
      */
     public function castJson($value, string $type, string $format = '')

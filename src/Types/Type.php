@@ -38,7 +38,7 @@ abstract class Type implements TypeContract
      * Cast to PHP type.
      *
      * @param mixed $value
-     * @param strint $format
+     * @param string $format
      * @return mixed
      */
     public function cast($value, string $format = '')
@@ -50,7 +50,7 @@ abstract class Type implements TypeContract
      * Cast to database type.
      *
      * @param mixed $value
-     * @param strint $format
+     * @param string $format
      * @return mixed
      */
     public function castDb($value, string $format = '')
@@ -62,7 +62,7 @@ abstract class Type implements TypeContract
      * Cast to json type.
      *
      * @param mixed $value
-     * @param strint $format
+     * @param string $format
      * @return mixed
      */
     public function castJson($value, string $format = '')

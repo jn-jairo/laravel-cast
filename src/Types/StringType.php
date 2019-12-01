@@ -10,7 +10,7 @@ class StringType extends Type
      * Cast to PHP type.
      *
      * @param mixed $value
-     * @param strint $format
+     * @param string $format
      * @return mixed
      */
     public function cast($value, string $format = '')
