@@ -1,6 +1,11 @@
 # Changelog
 
-## [Unreleased](https://github.com/jn-jairo/laravel-cast/compare/v0.0.3...master)
+## [Unreleased](https://github.com/jn-jairo/laravel-cast/compare/v1.0.0...master)
+
+## [v1.0.0 (2019-12-26)](https://github.com/jn-jairo/laravel-cast/compare/v0.0.3...v1.0.0)
+
+### Fixed
+- Datetime from Carbon with wrong format
 
 ## [v0.0.3 (2019-11-30)](https://github.com/jn-jairo/laravel-cast/compare/v0.0.2...v0.0.3)
 

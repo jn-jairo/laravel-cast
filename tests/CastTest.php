@@ -218,20 +218,23 @@ class CastTest extends TestCase
             ],
         ]);
 
-        $date = '1969-07-20 22:56:00';
+        $now = Carbon::now();
+        $date = $now->format('Y-m-d H:i:s');
         $carbon = Carbon::createFromFormat('Y-m-d H:i:s', $date);
         $dateTime = DateTime::createFromFormat('Y-m-d H:i:s', $date);
         $timestamp = $carbon->getTimestamp();
 
+        $this->assertInstanceOf(Carbon::class, $cast->cast($now, $type), 'Carbon instance from PHP');
         $this->assertInstanceOf(Carbon::class, $cast->cast($date, $type), 'Carbon instance from string');
         $this->assertInstanceOf(Carbon::class, $cast->cast($carbon, $type), 'Carbon instance from Carbon');
         $this->assertInstanceOf(Carbon::class, $cast->cast($dateTime, $type), 'Carbon instance from DateTime');
         $this->assertInstanceOf(Carbon::class, $cast->cast($timestamp, $type), 'Carbon instance from timestamp');
 
-        $this->assertSame($date, $cast->cast($date, $type)->toDateTimeString(), 'PHP from string');
-        $this->assertSame($date, $cast->cast($carbon, $type)->toDateTimeString(), 'PHP from Carbon');
-        $this->assertSame($date, $cast->cast($dateTime, $type)->toDateTimeString(), 'PHP from DateTime');
-        $this->assertSame($date, $cast->cast($timestamp, $type)->toDateTimeString(), 'PHP from timestamp');
+        $this->assertEquals($carbon, $cast->cast($now, $type), 'PHP from PHP');
+        $this->assertEquals($carbon, $cast->cast($date, $type), 'PHP from string');
+        $this->assertEquals($carbon, $cast->cast($carbon, $type), 'PHP from Carbon');
+        $this->assertEquals($carbon, $cast->cast($dateTime, $type), 'PHP from DateTime');
+        $this->assertEquals($carbon, $cast->cast($timestamp, $type), 'PHP from timestamp');
 
         $this->assertSame($date, $cast->castDb($date, $type), 'Database from string');
         $this->assertSame($date, $cast->castDb($carbon, $type), 'Database from Carbon');
@@ -263,20 +266,23 @@ class CastTest extends TestCase
             ],
         ]);
 
-        $date = '1969-07-20';
+        $now = Carbon::now();
+        $date = $now->format('Y-m-d');
         $carbon = Carbon::createFromFormat('Y-m-d', $date)->startOfDay();
         $dateTime = DateTime::createFromFormat('Y-m-d', $date);
         $timestamp = $carbon->getTimestamp();
 
+        $this->assertInstanceOf(Carbon::class, $cast->cast($now, $type), 'Carbon instance from PHP');
         $this->assertInstanceOf(Carbon::class, $cast->cast($date, $type), 'Carbon instance from string');
         $this->assertInstanceOf(Carbon::class, $cast->cast($carbon, $type), 'Carbon instance from Carbon');
         $this->assertInstanceOf(Carbon::class, $cast->cast($dateTime, $type), 'Carbon instance from DateTime');
         $this->assertInstanceOf(Carbon::class, $cast->cast($timestamp, $type), 'Carbon instance from timestamp');
 
-        $this->assertSame($date, $cast->cast($date, $type)->toDateString(), 'PHP from string');
-        $this->assertSame($date, $cast->cast($carbon, $type)->toDateString(), 'PHP from Carbon');
-        $this->assertSame($date, $cast->cast($dateTime, $type)->toDateString(), 'PHP from DateTime');
-        $this->assertSame($date, $cast->cast($timestamp, $type)->toDateString(), 'PHP from timestamp');
+        $this->assertEquals($carbon, $cast->cast($now, $type), 'PHP from PHP');
+        $this->assertEquals($carbon, $cast->cast($date, $type), 'PHP from string');
+        $this->assertEquals($carbon, $cast->cast($carbon, $type), 'PHP from Carbon');
+        $this->assertEquals($carbon, $cast->cast($dateTime, $type), 'PHP from DateTime');
+        $this->assertEquals($carbon, $cast->cast($timestamp, $type), 'PHP from timestamp');
 
         $this->assertSame($date, $cast->castDb($date, $type), 'Database from string');
         $this->assertSame($date, $cast->castDb($carbon, $type), 'Database from Carbon');
@@ -303,20 +309,23 @@ class CastTest extends TestCase
             ],
         ]);
 
-        $date = '1969-07-20';
+        $now = Carbon::now();
+        $date = $now->format('Y-m-d');
         $carbon = Carbon::createFromFormat('Y-m-d', $date)->startOfDay();
         $dateTime = DateTime::createFromFormat('Y-m-d', $date);
         $timestamp = $carbon->getTimestamp();
 
+        $this->assertInstanceOf(Carbon::class, $cast->cast($now, $type), 'Carbon instance from PHP');
         $this->assertInstanceOf(Carbon::class, $cast->cast($date, $type), 'Carbon instance from string');
         $this->assertInstanceOf(Carbon::class, $cast->cast($carbon, $type), 'Carbon instance from Carbon');
         $this->assertInstanceOf(Carbon::class, $cast->cast($dateTime, $type), 'Carbon instance from DateTime');
         $this->assertInstanceOf(Carbon::class, $cast->cast($timestamp, $type), 'Carbon instance from timestamp');
 
-        $this->assertSame($date, $cast->cast($date, $type)->toDateString(), 'PHP from string');
-        $this->assertSame($date, $cast->cast($carbon, $type)->toDateString(), 'PHP from Carbon');
-        $this->assertSame($date, $cast->cast($dateTime, $type)->toDateString(), 'PHP from DateTime');
-        $this->assertSame($date, $cast->cast($timestamp, $type)->toDateString(), 'PHP from timestamp');
+        $this->assertEquals($carbon, $cast->cast($now, $type), 'PHP from PHP');
+        $this->assertEquals($carbon, $cast->cast($date, $type), 'PHP from string');
+        $this->assertEquals($carbon, $cast->cast($carbon, $type), 'PHP from Carbon');
+        $this->assertEquals($carbon, $cast->cast($dateTime, $type), 'PHP from DateTime');
+        $this->assertEquals($carbon, $cast->cast($timestamp, $type), 'PHP from timestamp');
 
         $this->assertSame($date, $cast->castDb($date, $type), 'Database from string');
         $this->assertSame($date, $cast->castDb($carbon, $type), 'Database from Carbon');
@@ -343,16 +352,19 @@ class CastTest extends TestCase
             ],
         ]);
 
-        $date = '1969-07-20 22:56:00';
+        $now = Carbon::now();
+        $date = $now->format('Y-m-d H:i:s');
         $carbon = Carbon::createFromFormat('Y-m-d H:i:s', $date);
         $dateTime = DateTime::createFromFormat('Y-m-d H:i:s', $date);
         $timestamp = $carbon->getTimestamp();
 
+        $this->assertIsInt($cast->cast($now, $type), 'Timestamp from PHP');
         $this->assertIsInt($cast->cast($date, $type), 'Timestamp from string');
         $this->assertIsInt($cast->cast($carbon, $type), 'Timestamp from Carbon');
         $this->assertIsInt($cast->cast($dateTime, $type), 'Timestamp from DateTime');
         $this->assertIsInt($cast->cast($timestamp, $type), 'Timestamp from timestamp');
 
+        $this->assertSame($timestamp, $cast->cast($now, $type), 'PHP from PHP');
         $this->assertSame($timestamp, $cast->cast($date, $type), 'PHP from string');
         $this->assertSame($timestamp, $cast->cast($carbon, $type), 'PHP from Carbon');
         $this->assertSame($timestamp, $cast->cast($dateTime, $type), 'PHP from DateTime');

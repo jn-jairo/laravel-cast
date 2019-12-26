@@ -104,12 +104,9 @@ class DateTimeType extends Type
      */
     protected function asDateTime($value, $format)
     {
-        if ($value instanceof Carbon || $value instanceof CarbonInterface) {
-            return Carbon::instance($value);
-        }
-
-        if ($value instanceof DateTimeInterface) {
-            return Carbon::parse($value->format('Y-m-d H:i:s.u'), $value->getTimezone());
+        if ($value instanceof Carbon || $value instanceof CarbonInterface
+            || $value instanceof DateTimeInterface) {
+            $value = $value->format($format);
         }
 
         if (is_numeric($value)) {
