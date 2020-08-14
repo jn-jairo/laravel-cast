@@ -2,16 +2,14 @@
 
 ## [Unreleased](https://github.com/jn-jairo/laravel-cast/compare/v1.0.2...master)
 
-### Added
-- `ramsey/uuid` version `^4.0`
-
-### Changed
-- `thecodingmachine/safe` version `^1.1`
-
 ## [v1.0.2 (2020-08-12)](https://github.com/jn-jairo/laravel-cast/compare/v1.0.1...v1.0.2)
 
 ### Added
 - Travis PHP 7.4
+- `ramsey/uuid` version `^4.0`
+
+### Changed
+- `thecodingmachine/safe` version `^1.1`
 
 ## [v1.0.1 (2020-03-08)](https://github.com/jn-jairo/laravel-cast/compare/v1.0.0...v1.0.1)
 
