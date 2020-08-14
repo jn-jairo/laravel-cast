@@ -16,8 +16,8 @@
     "require": {
         "php": "^7.2",
         "illuminate/support": "^5.8|^6.0|^7.0",
-        "ramsey/uuid": "^3.8",
-        "thecodingmachine/safe": "^0.1.16"
+        "ramsey/uuid": "^3.8|^4.0",
+        "thecodingmachine/safe": "^1.1"
     },
     "require-dev": {
         "moontoast/math": "^1.1",

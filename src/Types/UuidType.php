@@ -7,6 +7,7 @@ use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
 use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
+use Ramsey\Uuid\UuidInterface;
 
 class UuidType extends Type
 {
@@ -49,16 +50,14 @@ class UuidType extends Type
             $format = $this->defaultFormat;
         }
 
-        $uuid = $this->createUuid($format);
-
         if (is_string($value) && strlen($value) == 16) {
-            $value = $uuid->fromBytes($value);
+            $value = Uuid::fromBytes($value);
         } elseif (is_string($value) && strlen($value) == 32) {
-            $value = $uuid->fromBytes(hex2bin($value));
+            $value = Uuid::fromBytes(hex2bin($value));
         } elseif (is_string($value) && strlen($value) == 36) {
-            $value = $uuid->fromString($value);
-        } elseif (! $value instanceof Uuid) {
-            $value = $uuid;
+            $value = Uuid::fromString($value);
+        } elseif (! $value instanceof UuidInterface) {
+            $value = $this->createUuid($format);
         }
 
         return $value;
@@ -106,9 +105,9 @@ class UuidType extends Type
      * Create a UUID.
      *
      * @param string $format
-     * @return \Ramsey\Uuid\Uuid
+     * @return \Ramsey\Uuid\UuidInterface
      */
-    protected function createUuid(string $format) : Uuid
+    protected function createUuid(string $format) : UuidInterface
     {
         $uuid = null;
 

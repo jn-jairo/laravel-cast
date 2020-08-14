@@ -14,6 +14,7 @@ use JnJairo\Laravel\Cast\Tests\Fixtures\DummyJsonable;
 use JnJairo\Laravel\Cast\Tests\Fixtures\Types\DummyType;
 use JnJairo\Laravel\Cast\Tests\OrchestraTestCase as TestCase;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use stdClass;
 
 /**
@@ -835,7 +836,7 @@ class CastTest extends TestCase
         $value = '';
 
         $uuid = $cast->cast($value, $type);
-        $this->assertInstanceOf(Uuid::class, $uuid, 'PHP');
+        $this->assertInstanceOf(UuidInterface::class, $uuid, 'PHP');
         $this->assertSame(4, $uuid->getVersion(), 'PHP uuid version');
 
         $uuid = $cast->castDb($value, $type);
@@ -877,7 +878,7 @@ class CastTest extends TestCase
         $value = '';
 
         $uuid = $cast->cast($value, $type);
-        $this->assertInstanceOf(Uuid::class, $uuid, 'PHP');
+        $this->assertInstanceOf(UuidInterface::class, $uuid, 'PHP');
         $this->assertSame($version, $uuid->getVersion(), 'PHP uuid version');
 
         $uuid = $cast->castDb($value, $type);
@@ -905,7 +906,7 @@ class CastTest extends TestCase
         $value = '';
 
         $uuid = $cast->cast($value, $type, $format);
-        $this->assertInstanceOf(Uuid::class, $uuid, 'PHP');
+        $this->assertInstanceOf(UuidInterface::class, $uuid, 'PHP');
         $this->assertSame($version, $uuid->getVersion(), 'PHP uuid version');
 
         $uuid = $cast->castDb($value, $type, $format);

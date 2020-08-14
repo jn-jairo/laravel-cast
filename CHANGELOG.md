@@ -2,6 +2,12 @@
 
 ## [Unreleased](https://github.com/jn-jairo/laravel-cast/compare/v1.0.2...master)
 
+### Added
+- `ramsey/uuid` version `^4.0`
+
+### Changed
+- `thecodingmachine/safe` version `^1.1`
+
 ## [v1.0.2 (2020-08-12)](https://github.com/jn-jairo/laravel-cast/compare/v1.0.1...v1.0.2)
 
 ### Added
