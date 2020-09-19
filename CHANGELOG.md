@@ -1,6 +1,11 @@
 # Changelog
 
-## [Unreleased](https://github.com/jn-jairo/laravel-cast/compare/v1.0.2...master)
+## [Unreleased](https://github.com/jn-jairo/laravel-cast/compare/v1.0.3...master)
+
+## [v1.0.3 (2020-09-18)](https://github.com/jn-jairo/laravel-cast/compare/v1.0.2...v1.0.3)
+
+### Added
+- Laravel 8 support
 
 ## [v1.0.2 (2020-08-12)](https://github.com/jn-jairo/laravel-cast/compare/v1.0.1...v1.0.2)
 
