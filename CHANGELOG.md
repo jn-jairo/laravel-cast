@@ -1,6 +1,11 @@
 # Changelog
 
-## [Unreleased](https://github.com/jn-jairo/laravel-cast/compare/v1.0.3...master)
+## [Unreleased](https://github.com/jn-jairo/laravel-cast/compare/v1.0.4...master)
+
+## [v1.0.4 (2020-11-27)](https://github.com/jn-jairo/laravel-cast/compare/v1.0.3...v1.0.4)
+
+### Added
+- `encrypted` type
 
 ## [v1.0.3 (2020-09-18)](https://github.com/jn-jairo/laravel-cast/compare/v1.0.2...v1.0.3)
 

@@ -4,8 +4,10 @@ namespace JnJairo\Laravel\Cast\Tests;
 
 use DateTime;
 use Decimal\Decimal;
+use Illuminate\Encryption\Encrypter;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Crypt;
 use JnJairo\Laravel\Cast\Cast;
 use JnJairo\Laravel\Cast\Contracts\Type as TypeContract;
 use JnJairo\Laravel\Cast\Exceptions\InvalidTypeException;
@@ -22,6 +24,20 @@ use stdClass;
  */
 class CastTest extends TestCase
 {
+    /**
+     * Define environment setup.
+     *
+     * @param \Illuminate\Foundation\Application $app
+     * @return void
+     */
+    protected function getEnvironmentSetUp($app)
+    {
+        $app['config']->set('app.key', 'base64:' . base64_encode(
+            Encrypter::generateKey('AES-256-CBC')
+        ));
+        $app['config']->set('app.cipher', 'AES-256-CBC');
+    }
+
     public function test_invalid_type_not_found() : void
     {
         $cast = new Cast();
@@ -916,5 +932,80 @@ class CastTest extends TestCase
         $uuid = $cast->castJson($value, $type, $format);
         $this->assertIsString($uuid, 'Json');
         $this->assertSame(36, strlen($uuid), 'Json uuid length');
+    }
+
+    public function test_encrypted() : void
+    {
+        $type = 'encrypted';
+
+        $cast = new Cast([
+            'types' => [
+                $type => \JnJairo\Laravel\Cast\Types\EncryptedType::class,
+            ],
+        ]);
+
+        $encrypted = Crypt::encrypt(1.23, false);
+        $doubleEncrypted = Crypt::encrypt($encrypted, false);
+
+        $decrypted = 1.23;
+
+        $this->assertSame('1.23', $cast->cast($encrypted, $type), 'PHP from encrypted');
+        $this->assertSame('1.23', $cast->cast($doubleEncrypted, $type), 'PHP from double encrypted');
+        $this->assertSame(1.23, $cast->cast($decrypted, $type), 'PHP from decrypted');
+        $this->assertSame('1.23', Crypt::decrypt($cast->castDb($encrypted, $type), false), 'Database from encrypted');
+        $this->assertSame('1.23', Crypt::decrypt($cast->castDb($doubleEncrypted, $type), false), 'Database from double encrypted');
+        $this->assertSame('1.23', Crypt::decrypt($cast->castDb($decrypted, $type), false), 'Database from decrypted');
+        $this->assertSame('1.23', $cast->castJson($encrypted, $type), 'Json from encrypted');
+        $this->assertSame('1.23', $cast->castJson($doubleEncrypted, $type), 'Json from double encrypted');
+        $this->assertSame(1.23, $cast->castJson($decrypted, $type), 'Json from decrypted');
+
+        $this->assertNull($cast->cast(null, $type), 'PHP null');
+        $this->assertNull($cast->castDb(null, $type), 'Database null');
+        $this->assertNull($cast->castJson(null, $type), 'Json null');
+    }
+
+    public function test_encrypted_array() : void
+    {
+        $type = 'encrypted';
+        $format = 'array';
+
+        $cast = new Cast([
+            'types' => [
+                $type => \JnJairo\Laravel\Cast\Types\EncryptedType::class,
+                $format => \JnJairo\Laravel\Cast\Types\ArrayType::class,
+            ],
+        ]);
+
+        $json = '{"foo":"bar"}';
+        $jsonEncrypted = Crypt::encrypt($json, false);
+        $jsonDoubleEncrypted = Crypt::encrypt($jsonEncrypted, false);
+        $array = ['foo' => 'bar'];
+        $object = (object) $array;
+        $collection = new Collection($array);
+
+        $this->assertSame($array, $cast->cast($jsonEncrypted, $type, $format), 'PHP from encrypted');
+        $this->assertSame($array, $cast->cast($jsonDoubleEncrypted, $type, $format), 'PHP from double encrypted');
+        $this->assertSame($array, $cast->cast($json, $type, $format), 'PHP from json');
+        $this->assertSame($array, $cast->cast($array, $type, $format), 'PHP from array');
+        $this->assertSame($array, $cast->cast($object, $type, $format), 'PHP from object');
+        $this->assertSame($array, $cast->cast($collection, $type, $format), 'PHP from collection');
+
+        $this->assertSame($json, Crypt::decrypt($cast->castDb($jsonEncrypted, $type, $format), false), 'Database from encrypted');
+        $this->assertSame($json, Crypt::decrypt($cast->castDb($jsonDoubleEncrypted, $type, $format), false), 'Database from double encrypted');
+        $this->assertSame($json, Crypt::decrypt($cast->castDb($json, $type, $format), false), 'Database from json');
+        $this->assertSame($json, Crypt::decrypt($cast->castDb($array, $type, $format), false), 'Database from array');
+        $this->assertSame($json, Crypt::decrypt($cast->castDb($object, $type, $format), false), 'Database from object');
+        $this->assertSame($json, Crypt::decrypt($cast->castDb($collection, $type, $format), false), 'Database from collection');
+
+        $this->assertSame($array, $cast->castJson($jsonEncrypted, $type, $format), 'Json from encrypted');
+        $this->assertSame($array, $cast->castJson($jsonDoubleEncrypted, $type, $format), 'Json from double encrypted');
+        $this->assertSame($array, $cast->castJson($json, $type, $format), 'Json from json');
+        $this->assertSame($array, $cast->castJson($array, $type, $format), 'Json from array');
+        $this->assertSame($array, $cast->castJson($object, $type, $format), 'Json from object');
+        $this->assertSame($array, $cast->castJson($collection, $type, $format), 'Json from collection');
+
+        $this->assertNull($cast->cast(null, $type, $format), 'PHP null');
+        $this->assertNull($cast->castDb(null, $type, $format), 'Database null');
+        $this->assertNull($cast->castJson(null, $type, $format), 'Json null');
     }
 }

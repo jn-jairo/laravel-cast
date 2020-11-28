@@ -67,5 +67,7 @@ return [
             ],
         ],
          */
+
+        'encrypted' => \JnJairo\Laravel\Cast\Types\EncryptedType::class,
     ],
 ];

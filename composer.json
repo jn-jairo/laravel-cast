@@ -15,6 +15,7 @@
     ],
     "require": {
         "php": "^7.2",
+        "illuminate/encryption": "^5.8|^6.0|^7.0|^8.0",
         "illuminate/support": "^5.8|^6.0|^7.0|^8.0",
         "ramsey/uuid": "^3.8|^4.0",
         "thecodingmachine/safe": "^1.1"

@@ -69,6 +69,7 @@ print_r(Cast::castJson(new DateTime('01 jan 2000'), 'date'));
 - `collection`
 - `string`, `text`
 - `uuid`
+- `encrypted`
 
 ## Format parameter
 
@@ -79,6 +80,12 @@ The decimal type uses the https://php-decimal.io extension, to use this type run
 - **uuid** - `(uuid1|uuid4|ordered)`. Example: `uuid1`. Default: `uuid4`.
 Empty string value will return a new UUID.
 To use ordered UUID format run `composer require moontoast/math:^1.1`.
+- **encrypted** - `type:format`. Example: `date:Y-m-d`. Default: ` `.
+```php
+$decrypted = Cast::cast($value, 'encrypted');
+$encrypted = Cast::castDb($value, 'encrypted');
+$decrypted = Cast::castJson($value, 'encrypted');
+```
 
 ## Custom types
 
