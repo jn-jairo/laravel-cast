@@ -1,6 +1,11 @@
 # Changelog
 
-## [Unreleased](https://github.com/jn-jairo/laravel-cast/compare/v1.0.4...master)
+## [Unreleased](https://github.com/jn-jairo/laravel-cast/compare/v1.0.5...master)
+
+## [v1.0.5 (2021-09-01)](https://github.com/jn-jairo/laravel-cast/compare/v1.0.4...v1.0.5)
+
+### Added
+- PHP 8 support
 
 ## [v1.0.4 (2020-11-27)](https://github.com/jn-jairo/laravel-cast/compare/v1.0.3...v1.0.4)
 
