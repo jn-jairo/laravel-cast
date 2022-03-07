@@ -15,6 +15,13 @@ jobs:
     steps:
       - checkout
 
+      - run:
+          name: Install PHP extensions
+          command: |
+            sudo apt update
+            sudo apt install -y libmpdec-dev
+            sudo apt install -y php<< parameters.php_version >>-decimal || sudo pecl install decimal
+
       - restore_cache:
           keys:
             - composer-v1-{{ .Branch }}-{{ checksum "composer.json" }}
