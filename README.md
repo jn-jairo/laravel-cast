@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/jn-jairo/laravel-cast.svg?branch=master)](https://travis-ci.com/jn-jairo/laravel-cast)
+[![Build Status](https://circleci.com/gh/jn-jairo/laravel-cast.svg?style=shield)](https://circleci.com/gh/jn-jairo/laravel-cast)
 [![Total Downloads](https://poser.pugx.org/jn-jairo/laravel-cast/downloads)](https://packagist.org/packages/jn-jairo/laravel-cast)
 [![Latest Stable Version](https://poser.pugx.org/jn-jairo/laravel-cast/v/stable)](https://packagist.org/packages/jn-jairo/laravel-cast)
 [![License](https://poser.pugx.org/jn-jairo/laravel-cast/license)](https://packagist.org/packages/jn-jairo/laravel-cast)
