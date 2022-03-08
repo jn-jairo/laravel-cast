@@ -953,7 +953,11 @@ class CastTest extends TestCase
         $this->assertSame('1.23', $cast->cast($doubleEncrypted, $type), 'PHP from double encrypted');
         $this->assertSame(1.23, $cast->cast($decrypted, $type), 'PHP from decrypted');
         $this->assertSame('1.23', Crypt::decrypt($cast->castDb($encrypted, $type), false), 'Database from encrypted');
-        $this->assertSame('1.23', Crypt::decrypt($cast->castDb($doubleEncrypted, $type), false), 'Database from double encrypted');
+        $this->assertSame(
+            '1.23',
+            Crypt::decrypt($cast->castDb($doubleEncrypted, $type), false),
+            'Database from double encrypted'
+        );
         $this->assertSame('1.23', Crypt::decrypt($cast->castDb($decrypted, $type), false), 'Database from decrypted');
         $this->assertSame('1.23', $cast->castJson($encrypted, $type), 'Json from encrypted');
         $this->assertSame('1.23', $cast->castJson($doubleEncrypted, $type), 'Json from double encrypted');
@@ -990,12 +994,24 @@ class CastTest extends TestCase
         $this->assertSame($array, $cast->cast($object, $type, $format), 'PHP from object');
         $this->assertSame($array, $cast->cast($collection, $type, $format), 'PHP from collection');
 
-        $this->assertSame($json, Crypt::decrypt($cast->castDb($jsonEncrypted, $type, $format), false), 'Database from encrypted');
-        $this->assertSame($json, Crypt::decrypt($cast->castDb($jsonDoubleEncrypted, $type, $format), false), 'Database from double encrypted');
+        $this->assertSame(
+            $json,
+            Crypt::decrypt($cast->castDb($jsonEncrypted, $type, $format), false),
+            'Database from encrypted'
+        );
+        $this->assertSame(
+            $json,
+            Crypt::decrypt($cast->castDb($jsonDoubleEncrypted, $type, $format), false),
+            'Database from double encrypted'
+        );
         $this->assertSame($json, Crypt::decrypt($cast->castDb($json, $type, $format), false), 'Database from json');
         $this->assertSame($json, Crypt::decrypt($cast->castDb($array, $type, $format), false), 'Database from array');
         $this->assertSame($json, Crypt::decrypt($cast->castDb($object, $type, $format), false), 'Database from object');
-        $this->assertSame($json, Crypt::decrypt($cast->castDb($collection, $type, $format), false), 'Database from collection');
+        $this->assertSame(
+            $json,
+            Crypt::decrypt($cast->castDb($collection, $type, $format), false),
+            'Database from collection'
+        );
 
         $this->assertSame($array, $cast->castJson($jsonEncrypted, $type, $format), 'Json from encrypted');
         $this->assertSame($array, $cast->castJson($jsonDoubleEncrypted, $type, $format), 'Json from double encrypted');
