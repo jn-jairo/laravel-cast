@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/jn-jairo/laravel-cast/compare/v1.0.5...master)
+## [Unreleased](https://github.com/jn-jairo/laravel-cast/compare/v1.0.6...master)
+
+## [v1.0.6 (2022-04-19)](https://github.com/jn-jairo/laravel-cast/compare/v1.0.5...v1.0.6)
+
+### Added
+- Laravel 9 support
+- `enum` type
 
 ## [v1.0.5 (2021-09-01)](https://github.com/jn-jairo/laravel-cast/compare/v1.0.4...v1.0.5)
 

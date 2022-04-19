@@ -13,6 +13,10 @@ use JnJairo\Laravel\Cast\Contracts\Type as TypeContract;
 use JnJairo\Laravel\Cast\Exceptions\InvalidTypeException;
 use JnJairo\Laravel\Cast\Tests\Fixtures\DummyArrayable;
 use JnJairo\Laravel\Cast\Tests\Fixtures\DummyJsonable;
+use JnJairo\Laravel\Cast\Tests\Fixtures\Enums\DummyArrayableEnum;
+use JnJairo\Laravel\Cast\Tests\Fixtures\Enums\DummyIntegerEnum;
+use JnJairo\Laravel\Cast\Tests\Fixtures\Enums\DummyJsonableEnum;
+use JnJairo\Laravel\Cast\Tests\Fixtures\Enums\DummyStringEnum;
 use JnJairo\Laravel\Cast\Tests\Fixtures\Types\DummyType;
 use JnJairo\Laravel\Cast\Tests\OrchestraTestCase as TestCase;
 use Ramsey\Uuid\Uuid;
@@ -1023,5 +1027,153 @@ class CastTest extends TestCase
         $this->assertNull($cast->cast(null, $type, $format), 'PHP null');
         $this->assertNull($cast->castDb(null, $type, $format), 'Database null');
         $this->assertNull($cast->castJson(null, $type, $format), 'Json null');
+    }
+
+    /**
+     * @requires PHP 8.1
+     */
+    public function test_enum_string() : void
+    {
+        $type = 'enum';
+        $format = DummyStringEnum::class;
+
+        $cast = new Cast([
+            'types' => [
+                $type => \JnJairo\Laravel\Cast\Types\EnumType::class,
+            ],
+        ]);
+
+        $this->assertSame($format::foo, $cast->cast('foo', $type, $format), 'PHP');
+        $this->assertSame('foo', $cast->castDb('foo', $type, $format), 'Database');
+        $this->assertSame('foo', $cast->castJson('foo', $type, $format), 'Json');
+
+        $this->assertSame($format::foo, $cast->cast($format::foo, $type, $format), 'PHP');
+        $this->assertSame('foo', $cast->castDb($format::foo, $type, $format), 'Database');
+        $this->assertSame('foo', $cast->castJson($format::foo, $type, $format), 'Json');
+
+        $this->assertNull($cast->cast(null, $type), 'PHP null');
+        $this->assertNull($cast->castDb(null, $type), 'Database null');
+        $this->assertNull($cast->castJson(null, $type), 'Json null');
+    }
+
+    /**
+     * @requires PHP 8.1
+     */
+    public function test_enum_integer() : void
+    {
+        $type = 'enum';
+        $format = DummyIntegerEnum::class;
+
+        $cast = new Cast([
+            'types' => [
+                $type => \JnJairo\Laravel\Cast\Types\EnumType::class,
+            ],
+        ]);
+
+        $this->assertSame($format::one, $cast->cast(1, $type, $format), 'PHP');
+        $this->assertSame(1, $cast->castDb(1, $type, $format), 'Database');
+        $this->assertSame(1, $cast->castJson(1, $type, $format), 'Json');
+
+        $this->assertSame($format::one, $cast->cast($format::one, $type, $format), 'PHP');
+        $this->assertSame(1, $cast->castDb($format::one, $type, $format), 'Database');
+        $this->assertSame(1, $cast->castJson($format::one, $type, $format), 'Json');
+
+        $this->assertNull($cast->cast(null, $type), 'PHP null');
+        $this->assertNull($cast->castDb(null, $type), 'Database null');
+        $this->assertNull($cast->castJson(null, $type), 'Json null');
+    }
+
+    /**
+     * @requires PHP 8.1
+     */
+    public function test_enum_arrayable() : void
+    {
+        $type = 'enum';
+        $format = DummyArrayableEnum::class;
+
+        $cast = new Cast([
+            'types' => [
+                $type => \JnJairo\Laravel\Cast\Types\EnumType::class,
+            ],
+        ]);
+
+        $this->assertSame($format::foo, $cast->cast(1, $type, $format), 'PHP');
+        $this->assertSame(1, $cast->castDb(1, $type, $format), 'Database');
+        $this->assertSame([
+            'name' => 'foo',
+            'value' => 1,
+            'description' => 'foo description',
+        ], $cast->castJson(1, $type, $format), 'Json');
+
+        $this->assertSame($format::foo, $cast->cast($format::foo, $type, $format), 'PHP');
+        $this->assertSame(1, $cast->castDb($format::foo, $type, $format), 'Database');
+        $this->assertSame([
+            'name' => 'foo',
+            'value' => 1,
+            'description' => 'foo description',
+        ], $cast->castJson($format::foo, $type, $format), 'Json');
+
+        $this->assertNull($cast->cast(null, $type), 'PHP null');
+        $this->assertNull($cast->castDb(null, $type), 'Database null');
+        $this->assertNull($cast->castJson(null, $type), 'Json null');
+    }
+
+    /**
+     * @requires PHP 8.1
+     */
+    public function test_enum_jsonable() : void
+    {
+        $type = 'enum';
+        $format = DummyJsonableEnum::class;
+
+        $cast = new Cast([
+            'types' => [
+                $type => \JnJairo\Laravel\Cast\Types\EnumType::class,
+            ],
+        ]);
+
+        $this->assertSame($format::foo, $cast->cast(1, $type, $format), 'PHP');
+        $this->assertSame(1, $cast->castDb(1, $type, $format), 'Database');
+        $this->assertSame([
+            'name' => 'foo',
+            'value' => 1,
+            'description' => 'foo description',
+        ], $cast->castJson(1, $type, $format), 'Json');
+
+        $this->assertSame($format::foo, $cast->cast($format::foo, $type, $format), 'PHP');
+        $this->assertSame(1, $cast->castDb($format::foo, $type, $format), 'Database');
+        $this->assertSame([
+            'name' => 'foo',
+            'value' => 1,
+            'description' => 'foo description',
+        ], $cast->castJson($format::foo, $type, $format), 'Json');
+
+        $this->assertNull($cast->cast(null, $type), 'PHP null');
+        $this->assertNull($cast->castDb(null, $type), 'Database null');
+        $this->assertNull($cast->castJson(null, $type), 'Json null');
+    }
+
+    public function test_enum_not_enum() : void
+    {
+        $type = 'enum';
+        $format = DummyType::class;
+
+        $cast = new Cast([
+            'types' => [
+                $type => \JnJairo\Laravel\Cast\Types\EnumType::class,
+            ],
+        ]);
+
+        $this->assertSame('foo', $cast->cast('foo', $type, $format), 'PHP');
+        $this->assertSame('foo', $cast->castDb('foo', $type, $format), 'Database');
+        $this->assertSame('foo', $cast->castJson('foo', $type, $format), 'Json');
+
+        $this->assertSame(1, $cast->cast(1, $type, $format), 'PHP');
+        $this->assertSame(1, $cast->castDb(1, $type, $format), 'Database');
+        $this->assertSame(1, $cast->castJson(1, $type, $format), 'Json');
+
+        $this->assertNull($cast->cast(null, $type), 'PHP null');
+        $this->assertNull($cast->castDb(null, $type), 'Database null');
+        $this->assertNull($cast->castJson(null, $type), 'Json null');
     }
 }

@@ -70,6 +70,7 @@ print_r(Cast::castJson(new DateTime('01 jan 2000'), 'date'));
 - `string`, `text`
 - `uuid`
 - `encrypted`
+- `enum`
 
 ## Format parameter
 
@@ -85,6 +86,54 @@ To use ordered UUID format run `composer require moontoast/math:^1.1`.
 $decrypted = Cast::cast($value, 'encrypted');
 $encrypted = Cast::castDb($value, 'encrypted');
 $decrypted = Cast::castJson($value, 'encrypted');
+```
+- **enum** - Example: `MyEnum::class`. Default: ` `.
+```php
+enum MyEnum : int
+{
+    case foo = 1;
+    case bar = 2;
+}
+
+Cast::cast(1, 'enum', MyEnum::class); // MyEnum::foo
+Cast::castDb(MyEnum::foo, 'enum', MyEnum::class); // 1
+Cast::castJson(MyEnum::foo, 'enum', MyEnum::class); // 1
+```
+It can be a instance of `\Illuminate\Contracts\Support\Arrayable` or `\Illuminate\Contracts\Support\Jsonable`.
+```php
+use Illuminate\Contracts\Support\Arrayable;
+
+enum MyEnum : string implements Arrayable
+{
+    case foo = 1;
+    case bar = 2;
+
+    public function description() : string
+    {
+        return match ($this) {
+            self::foo => 'foo description',
+            self::bar => 'bar description',
+        };
+    }
+
+    public function toArray()
+    {
+        return [
+            'name' => $this->name,
+            'value' => $this->value,
+            'description' => $this->description(),
+        ];
+    }
+}
+
+Cast::cast(1, 'enum', MyEnum::class); // MyEnum::foo
+Cast::castDb(MyEnum::foo, 'enum', MyEnum::class); // 1
+Cast::castJson(MyEnum::foo, 'enum', MyEnum::class);
+// [
+//      'name' => 'foo',
+//      'value' => 1,
+//      'description' => 'foo description'
+// ]
 ```
 
 ## Custom types

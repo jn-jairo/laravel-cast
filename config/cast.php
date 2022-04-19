@@ -69,5 +69,7 @@ return [
          */
 
         'encrypted' => \JnJairo\Laravel\Cast\Types\EncryptedType::class,
+
+        'enum' => \JnJairo\Laravel\Cast\Types\EnumType::class,
     ],
 ];
