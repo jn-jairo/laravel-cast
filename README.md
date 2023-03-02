@@ -1,4 +1,3 @@
-[![Build Status](https://circleci.com/gh/jn-jairo/laravel-cast.svg?style=shield)](https://circleci.com/gh/jn-jairo/laravel-cast)
 [![Total Downloads](https://poser.pugx.org/jn-jairo/laravel-cast/downloads)](https://packagist.org/packages/jn-jairo/laravel-cast)
 [![Latest Stable Version](https://poser.pugx.org/jn-jairo/laravel-cast/v/stable)](https://packagist.org/packages/jn-jairo/laravel-cast)
 [![License](https://poser.pugx.org/jn-jairo/laravel-cast/license)](https://packagist.org/packages/jn-jairo/laravel-cast)
@@ -7,9 +6,13 @@
 
 This package provide cast for Laravel.
 
-## Requirements
+## Version Compatibility
 
-- Laravel Framework >= 5.8
+ Laravel  | Eloquent Cast
+:---------|:----------
+ 5.8.x    | 1.x
+ 6.x      | 1.x
+ 7.x      | 1.x
 
 ## Installation
 
