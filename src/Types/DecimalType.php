@@ -3,50 +3,73 @@
 namespace JnJairo\Laravel\Cast\Types;
 
 use Decimal\Decimal;
-use JnJairo\Laravel\Cast\Types\Type;
 
 class DecimalType extends Type
 {
+    protected const ROUND_MODE = [
+        'up' => Decimal::ROUND_UP,
+        'down' => Decimal::ROUND_DOWN,
+        'ceiling' => Decimal::ROUND_CEILING,
+        'floor' => Decimal::ROUND_FLOOR,
+        'half_up' => Decimal::ROUND_HALF_UP,
+        'half_down' => Decimal::ROUND_HALF_DOWN,
+        'half_even' => Decimal::ROUND_HALF_EVEN,
+        'half_odd' => Decimal::ROUND_HALF_ODD,
+        'truncate' => Decimal::ROUND_TRUNCATE,
+    ];
+
     /**
      * Default precision.
      *
      * @var int
      */
-    protected $defaultPrecision = 28;
+    protected int $defaultPrecision = 28;
 
     /**
      * Default places.
      *
      * @var int
      */
-    protected $defaultPlaces = 2;
+    protected int $defaultPlaces = 2;
 
     /**
      * Default round mode.
      *
      * @var int
      */
-    protected $defaultRoundMode = Decimal::ROUND_HALF_UP;
+    protected int $defaultRoundMode = Decimal::ROUND_HALF_UP;
 
     /**
      * Set configuration.
      *
-     * @param array $config
+     * @param array<string, mixed> $config
      * @return void
      */
-    public function setConfig(array $config) : void
+    public function setConfig(array $config): void
     {
         parent::setConfig($config);
 
-        if (isset($this->config['precision']) && $this->config['precision'] !== '') {
+        if (
+            isset($this->config['precision'])
+            && (is_string($this->config['precision']) || is_int($this->config['precision']))
+            && $this->config['precision'] !== ''
+        ) {
             $this->defaultPrecision = (int) $this->config['precision'];
         }
 
-        if (isset($this->config['places']) && $this->config['places'] !== '') {
+        if (
+            isset($this->config['places'])
+            && (is_string($this->config['places']) || is_int($this->config['places']))
+            && $this->config['places'] !== ''
+        ) {
             $this->defaultPlaces = (int) $this->config['places'];
         }
 
-        if (isset($this->config['round_mode']) && $this->config['round_mode'] !== '') {
+        if (
+            isset($this->config['round_mode'])
+            && is_string($this->config['round_mode'])
+            && $this->config['round_mode'] !== ''
+        ) {
             $this->defaultRoundMode = $this->parseRoundMode($this->config['round_mode']);
         }
     }
@@ -58,22 +81,13 @@ class DecimalType extends Type
      * @param string $format
      * @return mixed
      */
-    public function cast($value, string $format = '')
+    public function cast(mixed $value, string $format = ''): mixed
     {
         if (is_null($value)) {
             return $value;
         }
 
-        $format = $this->parseFormat($format);
-
-        if (is_float($value)) {
-            $value = (string) $value;
-        }
-
-        $value = new Decimal($value, $format['precision']);
-        $value = $value->round($format['places'], $format['round_mode']);
-
-        return $value;
+        return $this->asDecimal($value, $this->parseFormat($format));
     }
 
     /**
@@ -83,17 +97,21 @@ class DecimalType extends Type
      * @param string $format
      * @return mixed
      */
-    public function castDb($value, string $format = '')
+    public function castDb(mixed $value, string $format = ''): mixed
     {
         if (is_null($value)) {
             return $value;
         }
 
-        $value = $this->cast($value, $format);
-        $format = $this->parseFormat($format);
-        $value = $value->toFixed($format['places'], false, $format['round_mode']);
+        $config = $this->parseFormat($format);
 
-        return $value;
+        $value = $this->asDecimal($value, $config);
+
+        if (is_null($value)) {
+            return $value;
+        }
+
+        return $this->serializeDecimal($value, $config);
     }
 
     /**
@@ -103,18 +121,81 @@ class DecimalType extends Type
      * @param string $format
      * @return mixed
      */
-    public function castJson($value, string $format = '')
+    public function castJson(mixed $value, string $format = ''): mixed
     {
         return $this->castDb($value, $format);
+    }
+
+    /**
+     * Cast to Decimal object.
+     *
+     * @param mixed $value
+     * @param array<string, mixed> $config
+     * @return \Decimal\Decimal|null
+     */
+    protected function asDecimal(mixed $value, array $config): ?Decimal
+    {
+        /**
+         * @var int $precision
+         */
+        $precision = $config['precision'];
+
+        /**
+         * @var int $places
+         */
+        $places = $config['places'];
+
+        /**
+         * @var int $roundMode
+         */
+        $roundMode = $config['round_mode'];
+
+        if (is_float($value)) {
+            $value = (string) $value;
+        }
+
+        if (
+            $value instanceof Decimal
+            || is_string($value)
+            || is_int($value)
+        ) {
+            $value = new Decimal($value, $precision);
+            $value = $value->round($places, $roundMode);
+            return $value;
+        }
+
+        return null;
+    }
+
+    /**
+     * Serialize the Decimal.
+     *
+     * @param \Decimal\Decimal $decimal
+     * @param array<string, mixed> $config
+     * @return string
+     */
+    protected function serializeDecimal(Decimal $decimal, array $config): string
+    {
+        /**
+         * @var int $places
+         */
+        $places = $config['places'];
+
+        /**
+         * @var int $roundMode
+         */
+        $roundMode = $config['round_mode'];
+
+        return $decimal->toFixed($places, false, $roundMode);
     }
 
     /**
      * Parse the format.
      *
      * @param string $format
-     * @return array ['precision', 'places', 'round_mode']
+     * @return array<string, mixed> ['precision', 'places', 'round_mode']
      */
-    protected function parseFormat(string $format) : array
+    protected function parseFormat(string $format): array
     {
         $formatParsed = [
             'precision' => $this->defaultPrecision,
@@ -122,7 +203,11 @@ class DecimalType extends Type
             'round_mode' => $this->defaultRoundMode,
         ];
 
-        $formats = explode('|', $format);
+        if (strpos($format, '|') !== false) {
+            $formats = explode('|', $format);
+        } else {
+            $formats = explode(',', $format);
+        }
 
         foreach ($formats as $format) {
             if ($format !== '') {
@@ -133,7 +218,7 @@ class DecimalType extends Type
                     $formatParsed['places'] = (int) $places;
                 } elseif (is_numeric($format)) {
                     $formatParsed['places'] = (int) $format;
-                } else {
+                } elseif (isset(self::ROUND_MODE[$format])) {
                     $formatParsed['round_mode'] = $this->parseRoundMode($format);
                 }
             }
@@ -148,22 +233,10 @@ class DecimalType extends Type
      * @param string $roundMode
      * @return int
      */
-    protected function parseRoundMode(string $roundMode) : int
+    protected function parseRoundMode(string $roundMode): int
     {
-        $rounds = [
-            'up' => Decimal::ROUND_UP,
-            'down' => Decimal::ROUND_DOWN,
-            'ceiling' => Decimal::ROUND_CEILING,
-            'floor' => Decimal::ROUND_FLOOR,
-            'half_up' => Decimal::ROUND_HALF_UP,
-            'half_down' => Decimal::ROUND_HALF_DOWN,
-            'half_even' => Decimal::ROUND_HALF_EVEN,
-            'half_odd' => Decimal::ROUND_HALF_ODD,
-            'truncate' => Decimal::ROUND_TRUNCATE,
-        ];
-
-        if (isset($rounds[$roundMode])) {
-            return $rounds[$roundMode];
+        if (isset(self::ROUND_MODE[$roundMode])) {
+            return self::ROUND_MODE[$roundMode];
         }
 
         return $this->defaultRoundMode;

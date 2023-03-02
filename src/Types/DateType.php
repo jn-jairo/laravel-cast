@@ -2,7 +2,7 @@
 
 namespace JnJairo\Laravel\Cast\Types;
 
-use JnJairo\Laravel\Cast\Types\DateTimeType;
+use Illuminate\Support\Carbon;
 
 class DateType extends DateTimeType
 {
@@ -11,7 +11,7 @@ class DateType extends DateTimeType
      *
      * @var string
      */
-    protected $defaultFormat = 'Y-m-d';
+    protected string $defaultFormat = 'Y-m-d';
 
     /**
      * Cast to PHP type.
@@ -20,7 +20,7 @@ class DateType extends DateTimeType
      * @param string $format
      * @return mixed
      */
-    public function cast($value, string $format = '')
+    public function cast(mixed $value, string $format = ''): mixed
     {
         if (is_null($value)) {
             return $value;
@@ -40,7 +40,7 @@ class DateType extends DateTimeType
      * @param string $format
      * @return mixed
      */
-    public function castDb($value, string $format = '')
+    public function castDb(mixed $value, string $format = ''): mixed
     {
         if (is_null($value)) {
             return $value;
@@ -52,6 +52,10 @@ class DateType extends DateTimeType
 
         $value = $this->asDate($value, $format);
 
+        if (is_null($value)) {
+            return $value;
+        }
+
         return $this->serializeDate($value, $format);
     }
 
@@ -62,8 +66,20 @@ class DateType extends DateTimeType
      * @param string $format
      * @return mixed
      */
-    public function castJson($value, string $format = '')
+    public function castJson(mixed $value, string $format = ''): mixed
     {
         return $this->castDb($value, $format);
+    }
+
+    /**
+     * Cast to DateTime object with time set to 00:00:00.
+     *
+     * @param mixed $value
+     * @param string $format
+     * @return \Illuminate\Support\Carbon|null
+     */
+    protected function asDate(mixed $value, string $format): ?Carbon
+    {
+        return $this->asDateTime($value, $format)?->startOfDay();
     }
 }

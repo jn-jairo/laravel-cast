@@ -4,7 +4,8 @@ namespace JnJairo\Laravel\Cast\Types;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
-use JnJairo\Laravel\Cast\Types\Type;
+
+use function Safe\json_decode;
 
 class EnumType extends Type
 {
@@ -15,7 +16,7 @@ class EnumType extends Type
      * @param string $format
      * @return mixed
      */
-    public function cast($value, string $format = '')
+    public function cast(mixed $value, string $format = ''): mixed
     {
         if (is_null($value)) {
             return $value;
@@ -39,7 +40,7 @@ class EnumType extends Type
      * @param string $format
      * @return mixed
      */
-    public function castDb($value, string $format = '')
+    public function castDb(mixed $value, string $format = ''): mixed
     {
         if (is_null($value)) {
             return $value;
@@ -63,7 +64,7 @@ class EnumType extends Type
      * @param string $format
      * @return mixed
      */
-    public function castJson($value, string $format = '')
+    public function castJson(mixed $value, string $format = ''): mixed
     {
         if (is_null($value)) {
             return $value;

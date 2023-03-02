@@ -11,34 +11,23 @@ class Cast implements CastContract
     /**
      * Configuration.
      *
-     * @var array
+     * @var array<string, mixed>
      */
-    protected $config = [];
+    protected array $config = [];
 
     /**
      * Types instances.
      *
-     * @var array
+     * @var \JnJairo\Laravel\Cast\Contracts\Type[]
      */
-    protected $typeInstances = [];
+    protected array $typeInstances = [];
 
     /**
-     * Callable that creates the type instance.
-     *
-     * The callable receives the class as the first parameter.
-     *
-     * @var callable
-     */
-    protected $typeCreator;
-
-    /**
-     * @param array $config
+     * @param array<string, mixed> $config
      */
     public function __construct(array $config = [])
     {
-        $this->config = array_merge([
-            'types' => [],
-        ], $config);
+        $this->setConfig($config);
     }
 
     /**
@@ -49,7 +38,7 @@ class Cast implements CastContract
      * @param string $format
      * @return mixed
      */
-    public function cast($value, string $type, string $format = '')
+    public function cast(mixed $value, string $type, string $format = ''): mixed
     {
         return $this->getTypeInstance($type)->cast($value, $format);
     }
@@ -62,7 +51,7 @@ class Cast implements CastContract
      * @param string $format
      * @return mixed
      */
-    public function castDb($value, string $type, string $format = '')
+    public function castDb(mixed $value, string $type, string $format = ''): mixed
     {
         return $this->getTypeInstance($type)->castDb($value, $format);
     }
@@ -75,9 +64,75 @@ class Cast implements CastContract
      * @param string $format
      * @return mixed
      */
-    public function castJson($value, string $type, string $format = '')
+    public function castJson(mixed $value, string $type, string $format = ''): mixed
     {
         return $this->getTypeInstance($type)->castJson($value, $format);
+    }
+
+    /**
+     * Set configuration.
+     *
+     * @param array<string, mixed> $config
+     * @return void
+     */
+    public function setConfig(array $config = []): void
+    {
+        $this->config = array_merge([
+            'types' => [],
+        ], $config);
+
+        $this->typeInstances = [];
+    }
+
+    /**
+     * Get configuration.
+     *
+     * @return array<string, mixed>
+     */
+    public function getConfig(): array
+    {
+        return $this->config;
+    }
+
+    /**
+     * Set type configuration.
+     *
+     * @param string $type
+     * @param string|array<string, mixed> $config
+     * @return void
+     */
+    public function setTypeConfig(string $type, string|array $config): void
+    {
+        $this->config['types'][$type] = $config;
+        unset($this->typeInstances[$type]);
+    }
+
+    /**
+     * Get type configuration.
+     *
+     * @param string $type
+     * @return string|array<string, mixed>|null
+     */
+    public function getTypeConfig(string $type): string|array|null
+    {
+        /**
+         * @var string|array<string, mixed>|null $config
+         */
+        $config = $this->config['types'][$type] ?? null;
+
+        return $config;
+    }
+
+    /**
+     * Remove type configuration.
+     *
+     * @param string $type
+     * @return void
+     */
+    public function removeTypeConfig(string $type): void
+    {
+        unset($this->config['types'][$type]);
+        unset($this->typeInstances[$type]);
     }
 
     /**
@@ -88,7 +143,7 @@ class Cast implements CastContract
      *
      * @throws \JnJairo\Laravel\Cast\Exceptions\InvalidTypeException
      */
-    protected function getTypeInstance(string $type) : Type
+    protected function getTypeInstance(string $type): Type
     {
         if (! isset($this->config['types'][$type])) {
             throw new InvalidTypeException('[' . $type . ']: Type not found in the configuration.');
@@ -114,6 +169,9 @@ class Cast implements CastContract
                 throw new InvalidTypeException('[' . $type . ']: Class "' . $class . '" does not exists.');
             }
 
+            /**
+             * @var object $instance
+             */
             $instance = app($class);
 
             if (! is_a($instance, Type::class)) {
@@ -122,6 +180,8 @@ class Cast implements CastContract
             }
 
             $instance->setConfig($config);
+
+            $instance->setCast($this);
 
             $this->typeInstances[$type] = $instance;
         }

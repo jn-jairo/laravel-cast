@@ -5,19 +5,34 @@ namespace JnJairo\Laravel\Cast\Contracts;
 interface Type
 {
     /**
-     * Set configuration.
+     * Set cast instance.
      *
-     * @param array $config
+     * @param \JnJairo\Laravel\Cast\Contracts\Cast $cast
      * @return void
      */
-    public function setConfig(array $config) : void;
+    public function setCast(Cast $cast): void;
+
+    /**
+     * Get cast instance.
+     *
+     * @return \JnJairo\Laravel\Cast\Contracts\Cast
+     */
+    public function getCast(): Cast;
+
+    /**
+     * Set configuration.
+     *
+     * @param array<string, mixed> $config
+     * @return void
+     */
+    public function setConfig(array $config): void;
 
     /**
      * Get configuration.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function getConfig() : array;
+    public function getConfig(): array;
 
     /**
      * Cast to PHP type.
@@ -26,7 +41,7 @@ interface Type
      * @param string $format
      * @return mixed
      */
-    public function cast($value, string $format = '');
+    public function cast(mixed $value, string $format = ''): mixed;
 
     /**
      * Cast to database type.
@@ -35,7 +50,7 @@ interface Type
      * @param string $format
      * @return mixed
      */
-    public function castDb($value, string $format = '');
+    public function castDb(mixed $value, string $format = ''): mixed;
 
     /**
      * Cast to json type.
@@ -44,5 +59,5 @@ interface Type
      * @param string $format
      * @return mixed
      */
-    public function castJson($value, string $format = '');
+    public function castJson(mixed $value, string $format = ''): mixed;
 }

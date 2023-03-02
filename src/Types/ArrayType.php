@@ -2,14 +2,21 @@
 
 namespace JnJairo\Laravel\Cast\Types;
 
-use JnJairo\Laravel\Cast\Types\JsonType;
-
 class ArrayType extends JsonType
 {
     /**
-     * Default format.
+     * Cast to PHP type.
      *
-     * @var string
+     * @param mixed $value
+     * @param string $format
+     * @return mixed
      */
-    protected $defaultFormat = 'array';
+    public function cast(mixed $value, string $format = ''): mixed
+    {
+        if (is_null($value)) {
+            return $value;
+        }
+
+        return $this->asArray($value);
+    }
 }

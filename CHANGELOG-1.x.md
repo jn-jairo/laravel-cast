@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased](https://github.com/jn-jairo/laravel-cast/compare/v1.0.6...master)
+## [Unreleased](https://github.com/jn-jairo/laravel-cast/compare/v1.0.6...1.x)
 
 ## [v1.0.6 (2022-04-19)](https://github.com/jn-jairo/laravel-cast/compare/v1.0.5...v1.0.6)
 

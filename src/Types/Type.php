@@ -2,24 +2,53 @@
 
 namespace JnJairo\Laravel\Cast\Types;
 
+use JnJairo\Laravel\Cast\Contracts\Cast;
 use JnJairo\Laravel\Cast\Contracts\Type as TypeContract;
 
 abstract class Type implements TypeContract
 {
     /**
+     * Cast instance.
+     *
+     * @var \JnJairo\Laravel\Cast\Contracts\Cast
+     */
+    protected Cast $cast;
+
+    /**
      * Configuration.
      *
-     * @var array
+     * @var array<string, mixed>
      */
-    protected $config;
+    protected array $config;
+
+    /**
+     * Set cast instance.
+     *
+     * @param \JnJairo\Laravel\Cast\Contracts\Cast $cast
+     * @return void
+     */
+    public function setCast(Cast $cast): void
+    {
+        $this->cast = $cast;
+    }
+
+    /**
+     * Get cast instance.
+     *
+     * @return \JnJairo\Laravel\Cast\Contracts\Cast
+     */
+    public function getCast(): Cast
+    {
+        return $this->cast;
+    }
 
     /**
      * Set configuration.
      *
-     * @param array $config
+     * @param array<string, mixed> $config
      * @return void
      */
-    public function setConfig(array $config) : void
+    public function setConfig(array $config): void
     {
         $this->config = $config;
     }
@@ -27,9 +56,9 @@ abstract class Type implements TypeContract
     /**
      * Get configuration.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function getConfig() : array
+    public function getConfig(): array
     {
         return $this->config;
     }
@@ -41,7 +70,7 @@ abstract class Type implements TypeContract
      * @param string $format
      * @return mixed
      */
-    public function cast($value, string $format = '')
+    public function cast(mixed $value, string $format = ''): mixed
     {
         return $value;
     }
@@ -53,7 +82,7 @@ abstract class Type implements TypeContract
      * @param string $format
      * @return mixed
      */
-    public function castDb($value, string $format = '')
+    public function castDb(mixed $value, string $format = ''): mixed
     {
         return $this->cast($value, $format);
     }
@@ -65,7 +94,7 @@ abstract class Type implements TypeContract
      * @param string $format
      * @return mixed
      */
-    public function castJson($value, string $format = '')
+    public function castJson(mixed $value, string $format = ''): mixed
     {
         return $this->cast($value, $format);
     }

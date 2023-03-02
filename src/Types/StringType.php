@@ -2,8 +2,6 @@
 
 namespace JnJairo\Laravel\Cast\Types;
 
-use JnJairo\Laravel\Cast\Types\Type;
-
 class StringType extends Type
 {
     /**
@@ -13,12 +11,12 @@ class StringType extends Type
      * @param string $format
      * @return mixed
      */
-    public function cast($value, string $format = '')
+    public function cast(mixed $value, string $format = ''): mixed
     {
         if (is_null($value)) {
             return $value;
         }
 
-        return (string) $value;
+        return strval($value);
     }
 }

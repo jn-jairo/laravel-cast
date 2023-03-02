@@ -4,12 +4,15 @@ namespace JnJairo\Laravel\Cast\Tests\Fixtures\Enums;
 
 use Illuminate\Contracts\Support\Arrayable;
 
+/**
+ * @implements \Illuminate\Contracts\Support\Arrayable<array-key, mixed>
+ */
 enum DummyArrayableEnum : int implements Arrayable
 {
     case foo = 1;
     case bar = 2;
 
-    public function description() : string
+    public function description(): string
     {
         return match ($this) {
             self::foo => 'foo description',
@@ -20,9 +23,9 @@ enum DummyArrayableEnum : int implements Arrayable
     /**
      * Get the instance as an array.
      *
-     * @return array
+     * @return array<array-key, mixed>
      */
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'name' => $this->name,

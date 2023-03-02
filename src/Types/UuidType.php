@@ -2,12 +2,13 @@
 
 namespace JnJairo\Laravel\Cast\Types;
 
-use JnJairo\Laravel\Cast\Types\Type;
 use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
 use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
 use Ramsey\Uuid\UuidInterface;
+
+use function Safe\hex2bin;
 
 class UuidType extends Type
 {
@@ -16,19 +17,23 @@ class UuidType extends Type
      *
      * @var string
      */
-    protected $defaultFormat = 'uuid4';
+    protected string $defaultFormat = 'uuid4';
 
     /**
      * Set configuration.
      *
-     * @param array $config
+     * @param array<string, mixed> $config
      * @return void
      */
-    public function setConfig(array $config) : void
+    public function setConfig(array $config): void
     {
         parent::setConfig($config);
 
-        if (isset($this->config['format'])) {
+        if (
+            isset($this->config['format'])
+            && is_string($this->config['format'])
+            && $this->config['format'] !== ''
+        ) {
             $this->defaultFormat = $this->config['format'];
         }
     }
@@ -40,7 +45,7 @@ class UuidType extends Type
      * @param string $format
      * @return mixed
      */
-    public function cast($value, string $format = '')
+    public function cast(mixed $value, string $format = ''): mixed
     {
         if (is_null($value)) {
             return $value;
@@ -70,12 +75,15 @@ class UuidType extends Type
      * @param string $format
      * @return mixed
      */
-    public function castDb($value, string $format = '')
+    public function castDb(mixed $value, string $format = ''): mixed
     {
         if (is_null($value)) {
             return $value;
         }
 
+        /**
+         * @var \Ramsey\Uuid\UuidInterface $value
+         */
         $value = $this->cast($value, $format);
         $value = $value->getBytes();
 
@@ -89,12 +97,15 @@ class UuidType extends Type
      * @param string $format
      * @return mixed
      */
-    public function castJson($value, string $format = '')
+    public function castJson(mixed $value, string $format = ''): mixed
     {
         if (is_null($value)) {
             return $value;
         }
 
+        /**
+         * @var \Ramsey\Uuid\UuidInterface $value
+         */
         $value = $this->cast($value, $format);
         $value = $value->toString();
 
@@ -107,19 +118,19 @@ class UuidType extends Type
      * @param string $format
      * @return \Ramsey\Uuid\UuidInterface
      */
-    protected function createUuid(string $format) : UuidInterface
+    protected function createUuid(string $format): UuidInterface
     {
         $uuid = null;
 
         switch ($format) {
             case 'ordered':
-                $factory = new UuidFactory;
+                $factory = new UuidFactory();
                 $factory->setRandomGenerator(new CombGenerator(
                     $factory->getRandomGenerator(),
-                    $factory->getNumberConverter()
+                    $factory->getNumberConverter(),
                 ));
                 $factory->setCodec(new TimestampFirstCombCodec(
-                    $factory->getUuidBuilder()
+                    $factory->getUuidBuilder(),
                 ));
                 $uuid = $factory->uuid4();
                 break;

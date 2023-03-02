@@ -4,35 +4,12 @@ namespace JnJairo\Laravel\Cast\Types;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Support\Collection;
-use JnJairo\Laravel\Cast\Types\Type;
+
 use function Safe\json_decode;
 use function Safe\json_encode;
 
 class JsonType extends Type
 {
-    /**
-     * Default format.
-     *
-     * @var string
-     */
-    protected $defaultFormat = 'json';
-
-    /**
-     * Set configuration.
-     *
-     * @param array $config
-     * @return void
-     */
-    public function setConfig(array $config) : void
-    {
-        parent::setConfig($config);
-
-        if (isset($this->config['format'])) {
-            $this->defaultFormat = $this->config['format'];
-        }
-    }
-
     /**
      * Cast to PHP type.
      *
@@ -40,32 +17,13 @@ class JsonType extends Type
      * @param string $format
      * @return mixed
      */
-    public function cast($value, string $format = '')
+    public function cast(mixed $value, string $format = ''): mixed
     {
         if (is_null($value)) {
             return $value;
         }
 
-        if ($format === '') {
-            $format = $this->defaultFormat;
-        }
-
-        switch ($format) {
-            case 'json':
-                $value = $this->asJson($value);
-                break;
-            case 'array':
-                $value = $this->asArray($value);
-                break;
-            case 'object':
-                $value = $this->asObject($value);
-                break;
-            case 'collection':
-                $value = $this->asCollection($value);
-                break;
-        }
-
-        return $value;
+        return $this->asJson($value);
     }
 
     /**
@@ -75,7 +33,7 @@ class JsonType extends Type
      * @param string $format
      * @return mixed
      */
-    public function castDb($value, string $format = '')
+    public function castDb(mixed $value, string $format = ''): mixed
     {
         if (is_null($value)) {
             return $value;
@@ -91,7 +49,7 @@ class JsonType extends Type
      * @param string $format
      * @return mixed
      */
-    public function castJson($value, string $format = '')
+    public function castJson(mixed $value, string $format = ''): mixed
     {
         if (is_null($value)) {
             return $value;
@@ -104,9 +62,9 @@ class JsonType extends Type
      * Cast to array.
      *
      * @param mixed $value
-     * @return array
+     * @return array<array-key, mixed>|null
      */
-    protected function asArray($value)
+    protected function asArray(mixed $value): ?array
     {
         if ($value instanceof Arrayable) {
             $value = $value->toArray();
@@ -115,28 +73,11 @@ class JsonType extends Type
         } elseif (is_string($value)) {
             $value = json_decode($value, true);
         } elseif (is_object($value)) {
-            $value = (array) $value;
+            $value = json_decode(json_encode($value), true);
         }
 
-        return $value;
-    }
-
-    /**
-     * Cast to object.
-     *
-     * @param mixed $value
-     * @return object
-     */
-    protected function asObject($value)
-    {
-        if ($value instanceof Arrayable) {
-            $value = (object) $value->toArray();
-        } elseif ($value instanceof Jsonable) {
-            $value = (object) json_decode($value->toJson(), true);
-        } elseif (is_string($value)) {
-            $value = (object) json_decode($value, true);
-        } elseif (is_array($value)) {
-            $value = (object) $value;
+        if (! is_array($value)) {
+            $value = null;
         }
 
         return $value;
@@ -146,9 +87,9 @@ class JsonType extends Type
      * Cast to json.
      *
      * @param mixed $value
-     * @return string
+     * @return string|null
      */
-    protected function asJson($value)
+    protected function asJson(mixed $value): ?string
     {
         if ($value instanceof Jsonable) {
             $value = $value->toJson();
@@ -158,19 +99,8 @@ class JsonType extends Type
             $value = json_encode($value);
         }
 
-        return $value;
-    }
-
-    /**
-     * Cast to Collection.
-     *
-     * @param mixed $value
-     * @return \Illuminate\Support\Collection
-     */
-    protected function asCollection($value)
-    {
-        if (! $value instanceof Collection) {
-            $value = new Collection($this->asArray($value));
+        if (! is_string($value)) {
+            $value = null;
         }
 
         return $value;

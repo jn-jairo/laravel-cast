@@ -20,11 +20,6 @@ return [
         'decimal' => [
             'class' => \JnJairo\Laravel\Cast\Types\DecimalType::class,
             'config' => [
-                // Example using format parameter:
-                // Cast::cast($value, 'decimal', '10:2|half_up');
-                // Cast::cast($value, 'decimal', '10:2');
-                // Cast::cast($value, 'decimal', '2');
-                // Cast::cast($value, 'decimal', 'half_up');
                 'precision' => 28,
                 'places' => 2,
                 'round_mode' => 'half_up', // up|down|ceiling|floor|half_up|half_down|half_even|half_odd|truncate
@@ -41,13 +36,19 @@ return [
         'datetime' => [
             'class' => \JnJairo\Laravel\Cast\Types\DateTimeType::class,
             'config' => [
-                // Example using format parameter:
-                // Cast::cast($value, 'datetime', 'Y-m-d H:i:s');
                 'format' => 'Y-m-d H:i:s',
             ],
         ],
          */
         'date' => \JnJairo\Laravel\Cast\Types\DateType::class,
+        /*
+        'date' => [
+            'class' => \JnJairo\Laravel\Cast\Types\DateType::class,
+            'config' => [
+                'format' => 'Y-m-d',
+            ],
+        ],
+         */
         'timestamp' => \JnJairo\Laravel\Cast\Types\TimestampType::class,
 
         'json' => \JnJairo\Laravel\Cast\Types\JsonType::class,
@@ -61,15 +62,59 @@ return [
         'uuid' => [
             'class' => \JnJairo\Laravel\Cast\Types\UuidType::class,
             'config' => [
-                // Example using format parameter:
-                // Cast::cast($value, 'uuid', 'uuid1');
                 'format' => 'uuid4', // uuid1|uuid4|ordered
             ],
         ],
          */
 
-        'encrypted' => \JnJairo\Laravel\Cast\Types\EncryptedType::class,
-
         'enum' => \JnJairo\Laravel\Cast\Types\EnumType::class,
+
+        'pipe' => \JnJairo\Laravel\Cast\Types\PipeType::class,
+        /*
+        'pipe' => [
+            'class' => \JnJairo\Laravel\Cast\Types\PipeType::class,
+            'config' => [
+                'php_direction' => '>', // >|<
+                'db_direction' => '<', // >|<
+                'json_direction' => '>', // >|<
+            ],
+        ],
+         */
+
+        'encrypted' => \JnJairo\Laravel\Cast\Types\EncryptedType::class,
+        /*
+        'encrypted' => [
+            'class' => \JnJairo\Laravel\Cast\Types\CompressedType::class,
+            'config' => [
+                'decrypt' => 'one', // one|all
+                'key' => '', // base64:<key in base 64>
+                'cipher' => '', // aes-128-cbc|aes-256-cbc|aes-128-gcm|aes-256-gcm
+            ],
+        ],
+         */
+
+        'compressed' => \JnJairo\Laravel\Cast\Types\CompressedType::class,
+        /*
+        'compressed' => [
+            'class' => \JnJairo\Laravel\Cast\Types\CompressedType::class,
+            'config' => [
+                'compress' => 'always', // always|smaller
+                'decompress' => 'one', // one|all
+                'level' => -1, // -1 >= level >= 9
+                'encoding' => 'raw', // raw|deflate|gzip
+            ],
+        ],
+         */
+
+        'base64' => \JnJairo\Laravel\Cast\Types\Base64Type::class,
+        /*
+        'base64' => [
+            'class' => \JnJairo\Laravel\Cast\Types\Base64Type::class,
+            'config' => [
+                'decode' => 'one', // one|all
+                'prefix' => '',
+            ],
+        ],
+         */
     ],
 ];

@@ -2,8 +2,6 @@
 
 namespace JnJairo\Laravel\Cast\Types;
 
-use JnJairo\Laravel\Cast\Types\DateTimeType;
-
 class TimestampType extends DateTimeType
 {
     /**
@@ -13,7 +11,7 @@ class TimestampType extends DateTimeType
      * @param string $format
      * @return mixed
      */
-    public function cast($value, string $format = '')
+    public function cast(mixed $value, string $format = ''): mixed
     {
         if (is_null($value)) {
             return $value;
@@ -33,7 +31,7 @@ class TimestampType extends DateTimeType
      * @param string $format
      * @return mixed
      */
-    public function castDb($value, string $format = '')
+    public function castDb(mixed $value, string $format = ''): mixed
     {
         return $this->cast($value, $format);
     }
@@ -45,8 +43,20 @@ class TimestampType extends DateTimeType
      * @param string $format
      * @return mixed
      */
-    public function castJson($value, string $format = '')
+    public function castJson(mixed $value, string $format = ''): mixed
     {
         return $this->cast($value, $format);
+    }
+
+    /**
+     * Cast to unix timestamp.
+     *
+     * @param mixed $value
+     * @param string $format
+     * @return int
+     */
+    protected function asTimestamp(mixed $value, string $format): int
+    {
+        return $this->asDateTime($value, $format)?->getTimestamp() ?? 0;
     }
 }

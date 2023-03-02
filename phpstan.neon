@@ -1,0 +1,9 @@
+parameters:
+    level: max
+    paths:
+        - config
+        - src
+        - tests
+    ignoreErrors:
+        - '#Call to an undefined method Pest\\Expectation\\|Pest\\Support\\Extendable::#'
+        - '#Cannot access offset .* on mixed#'
