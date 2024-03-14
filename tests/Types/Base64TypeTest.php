@@ -9,6 +9,7 @@ $datasetSeparator = [
 ];
 
 $datasetConfig = (function () {
+    $invalid = '@';
     $decoded = '';
     for ($i = 1; $i <= 255; $i++) {
         $decoded .= chr($i);
@@ -18,6 +19,9 @@ $datasetConfig = (function () {
     $tripleEncoded = base64_encode($doubleEncoded);
 
     $prefix = 'base64:';
+    $prefixInvalid = $prefix . $invalid;
+    $prefixInvalidEncoded = $prefix . base64_encode($invalid);
+    $prefixInvalidDoubleEncoded = $prefix . base64_encode($prefixInvalid);
     $prefixEncoded = $prefix . base64_encode($decoded);
     $prefixDoubleEncoded = $prefix . base64_encode($prefixEncoded);
     $prefixTripleEncoded = $prefix . base64_encode($prefixDoubleEncoded);
@@ -59,6 +63,15 @@ $datasetConfig = (function () {
             $prefixEncoded,
         ],
 
+        'all_prefix_invalid_decoded' => ['all', $prefix, $invalid, $invalid, $prefixInvalidEncoded, $invalid],
+        'all_prefix_invalid_encoded' => [
+            'all',
+            $prefix,
+            $prefixInvalid,
+            $prefixInvalid,
+            $prefixInvalidDoubleEncoded,
+            $prefixInvalid,
+        ],
         'all_prefix_decoded' => ['all', $prefix, $decoded, $decoded, $prefixEncoded, $decoded],
         'all_prefix_encoded' => ['all', $prefix, $prefixEncoded, $decoded, $prefixEncoded, $decoded],
         'all_prefix_double_encoded' => ['all', $prefix, $prefixDoubleEncoded, $decoded, $prefixEncoded, $decoded],
@@ -66,6 +79,7 @@ $datasetConfig = (function () {
 })();
 
 $datasetFormat = (function () {
+    $invalid = '@';
     $decoded = '';
     for ($i = 1; $i <= 255; $i++) {
         $decoded .= chr($i);
@@ -75,6 +89,9 @@ $datasetFormat = (function () {
     $tripleEncoded = base64_encode($doubleEncoded);
 
     $prefix = 'base64:';
+    $prefixInvalid = $prefix . $invalid;
+    $prefixInvalidEncoded = $prefix . base64_encode($invalid);
+    $prefixInvalidDoubleEncoded = $prefix . base64_encode($prefixInvalid);
     $prefixEncoded = $prefix . base64_encode($decoded);
     $prefixDoubleEncoded = $prefix . base64_encode($prefixEncoded);
     $prefixTripleEncoded = $prefix . base64_encode($prefixDoubleEncoded);
@@ -124,6 +141,15 @@ $datasetFormat = (function () {
             $prefixEncoded,
         ],
 
+        'all_prefix_invalid_decoded' => ['all', $prefix, $invalid, $invalid, $prefixInvalidEncoded, $invalid],
+        'all_prefix_invalid_encoded' => [
+            'all',
+            $prefix,
+            $prefixInvalid,
+            $prefixInvalid,
+            $prefixInvalidDoubleEncoded,
+            $prefixInvalid,
+        ],
         'all_prefix_decoded' => ['all', $prefix, $decoded, $decoded, $prefixEncoded, $decoded],
         'all_prefix_encoded' => ['all', $prefix, $prefixEncoded, $decoded, $prefixEncoded, $decoded],
         'all_prefix_double_encoded' => ['all', $prefix, $prefixDoubleEncoded, $decoded, $prefixEncoded, $decoded],
