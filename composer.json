@@ -15,15 +15,15 @@
     ],
     "require": {
         "php": "^8.1",
-        "illuminate/encryption": "^8.83|^9.0|^10.0|^11.0",
-        "illuminate/support": "^8.83|^9.0|^10.0|^11.0",
+        "illuminate/encryption": "^8.83|^9.0|^10.0|^11.0|^12.0",
+        "illuminate/support": "^8.83|^9.0|^10.0|^11.0|^12.0",
         "nesbot/carbon": "^2.66|^3.0",
         "ramsey/uuid": "^4.7",
-        "thecodingmachine/safe": "^2.4"
+        "thecodingmachine/safe": "^2.4|^3.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^6.24|^7.0|^8.0|^9.0",
-        "pestphp/pest": "^1.22|^2.34",
+        "orchestra/testbench": "^6.24|^7.0|^8.0|^9.0|^10.0",
+        "pestphp/pest": "^1.22|^2.34|^3.7.4",
         "php-decimal/php-decimal": "^1.1"
     },
     "suggest": {

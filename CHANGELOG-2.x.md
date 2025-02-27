@@ -1,6 +1,11 @@
 # Changelog
 
-## [Unreleased](https://github.com/jn-jairo/laravel-cast/compare/v2.0.1...2.x)
+## [Unreleased](https://github.com/jn-jairo/laravel-cast/compare/v2.0.2...2.x)
+
+## [v2.0.2 (2025-02-26)](https://github.com/jn-jairo/laravel-cast/compare/v2.0.1...v2.0.2)
+
+### Added
+- Laravel 12 support
 
 ## [v2.0.1 (2024-03-14)](https://github.com/jn-jairo/laravel-cast/compare/v2.0.0...v2.0.1)
 

@@ -17,6 +17,7 @@ This package provide cast for Laravel.
   9.x     | 2.x
  10.x     | 2.x
  11.x     | 2.x
+ 12.x     | 2.x
 
 ## Installation
 
